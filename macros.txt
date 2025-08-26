@@ -1,0 +1,12 @@
+1. Amicus.44\n
+2. jon\tAmicus.44\n
+3. Raspberry Pi
+4. home\ncls\n
+5. 3393
+6. test
+7. g
+8. h
+9. ssh pi@10.0.0.2
+10. j
+11. k
+12. l

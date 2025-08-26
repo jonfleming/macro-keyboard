@@ -1,0 +1,51 @@
+orientation: normal
+
+rows: 3
+columns: 4
+knobs: 3
+
+layers:
+  - buttons:
+      - ["shift-a,m,i,c,u,s,Dot,4,4,Enter", "j,o,n,Tab,shift-a,m,i,c,u,s,Dot,4,4,Enter", "shift-r,a,s,p,b,e,r,r,y,Space,shift-p,i", "h,o,m,e,Enter,c,l,s,Enter"]
+      - ["e", "f", "g", "h"]
+      - ["i", "j", "k", "l"]
+    knobs:
+      - ccw: "Previous"
+        gpress: "Play"
+        cw: "Next"
+      - ccw: "Win-Left"
+        press: "Calculator"
+        cw: "Win-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["Escape", "w", "e", "r"] # click", "lclick", "rclick", "mclick"]
+      - ["a", "s", "d", "f"] # click+rclick", "wheeldown", "shift-wheelup", "ctrl-wheelup"]
+      - ["shift", "z", "x", "c"] #alt-wheelup", "ctrl-click", "wheelup", "wheelup"]
+    knobs:
+      - ccw: "Left"
+        press: "Home"
+        cw: "Right"
+      - ccw: "Ctrl-Left"
+        press: "End"
+        cw: "Ctrl-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["F1", "F2", "F3", "F4" ]
+      - ["F5", "F6", "F7", "F8"]
+      - ["F9", "F10", "F11", "F12"]
+    knobs:
+      - ccw: "Left"
+        press: "Home"
+        cw: "Right"
+      - ccw: "Ctrl-Left"
+        press: "End"
+        cw: "Ctrl-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"

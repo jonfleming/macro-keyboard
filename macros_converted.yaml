@@ -1,0 +1,52 @@
+orientation: normal
+
+rows: 3
+columns: 4
+knobs: 3
+
+layers:
+  - buttons:
+      - ["1,dot,space,shift-a,m,i,c,u,s,dot,4,4,backslash,n", "2,dot,space,j,o,n,backslash,t,shift-a,m,i,c,u,s,dot,4,4,backslash,n", "3,dot,space,shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "4,dot,space,h,o,m,e,backslash,n,c,l,s,backslash,n"]
+      - ["5,dot,space,3,3,9,3", "6,dot,space,t,e,s,t", "7,dot,space,g", "8,dot,space,h"]
+      - ["9,dot,space,s,s,h,space,p,i,shift-2,1,0,dot,0,dot,0,dot,2", "1,0,dot,space,j", "1,1,dot,space,k", "1,2,dot,space,l"]
+    knobs:
+      - ccw: "Previous"
+        gpress: "Play"
+        cw: "Next"
+      - ccw: "Win-Left"
+        press: "Calculator"
+        cw: "Win-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["Escape", "w", "e", "r"]
+      - ["a", "s", "d", "f"]
+      - ["shift", "z", "x", "c"]
+    knobs:
+      - ccw: "Left"
+        press: "Home"
+        cw: "Right"
+      - ccw: "Ctrl-Left"
+        press: "End"
+        cw: "Ctrl-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["F1", "F2", "F3", "F4"]
+      - ["F5", "F6", "F7", "F8"]
+      - ["F9", "F10", "F11", "F12"]
+    knobs:
+      - ccw: "Left"
+        press: "Home"
+        cw: "Right"
+      - ccw: "Ctrl-Left"
+        press: "End"
+        cw: "Ctrl-Right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+

@@ -8,7 +8,7 @@ layers:
   - buttons:
       - ["shift-a,m,i,c,u,s,Dot,4,4,Enter", "j,o,n,Tab,shift-a,m,i,c,u,s,Dot,4,4,Enter", "shift-r,a,s,p,b,e,r,r,y,Space,shift-p,i", "h,o,m,e,Enter,c,l,s,Enter"]
       - ["e", "f", "g", "h"]
-      - ["i", "j", "k", "l"]
+      - ["ctrl-b", "alt-b", "backspace", "delete"]
     knobs:
       - ccw: "Previous"
         gpress: "Play"

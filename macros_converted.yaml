@@ -6,9 +6,9 @@ knobs: 3
 
 layers:
   - buttons:
-      - ["1,dot,space,shift-a,m,i,c,u,s,dot,4,4,backslash,n", "2,dot,space,j,o,n,backslash,t,shift-a,m,i,c,u,s,dot,4,4,backslash,n", "3,dot,space,shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "4,dot,space,h,o,m,e,backslash,n,c,l,s,backslash,n"]
-      - ["5,dot,space,3,3,9,3", "6,dot,space,t,e,s,t", "7,dot,space,g", "8,dot,space,h"]
-      - ["9,dot,space,s,s,h,space,p,i,shift-2,1,0,dot,0,dot,0,dot,2", "1,0,dot,space,j", "1,1,dot,space,k", "1,2,dot,space,l"]
+      - ["shift-a,m,i,c,u,s,dot,4,4,Enter", "j,o,n,Tab,shift-a,m,i,c,u,s,dot,4,4,Enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,Enter,c,l,s,Enter"]
+      - ["3,3,9,3", "t,e,s,t", "g", "h"]
+      - ["s,s,h,space,p,i,shift-2,1,0,dot,0,dot,0,dot,2", "j", "k", "l"]
     knobs:
       - ccw: "Previous"
         gpress: "Play"

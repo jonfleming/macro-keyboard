@@ -1,12 +1,36 @@
-1. Amicus.44\n
-2. jon\tAmicus.44\n
-3. Raspberry Pi
-4. home\ncls\n
-5. 3393
-6. test
-7. g
-8. h
-9. ssh pi@10.0.0.2
-10. j
-11. k
-12. l
+Layer 1, 1. Amicus.44\n
+Layer 1, 2. jon\tAmicus.44\n
+Layer 1, 3. Raspberry Pi
+Layer 1, 4. home\ncls\n
+Layer 1, 5. e
+Layer 1, 6. f
+Layer 1, 7. g
+Layer 1, 8. h
+Layer 1, 9. [ERROR: Unsupported modifier in accord: ctrl-b]
+Layer 1, 10. [ERROR: Unsupported modifier in accord: alt-b]
+Layer 1, 11. \b
+Layer 1, 12. [ERROR: Unsupported key code: delete]
+Layer 2, 13. [ERROR: Unsupported key code: escape]
+Layer 2, 14. w
+Layer 2, 15. e
+Layer 2, 16. r
+Layer 2, 17. a
+Layer 2, 18. s
+Layer 2, 19. d
+Layer 2, 20. f
+Layer 2, 21. [ERROR: Unsupported key code: shift]
+Layer 2, 22. z
+Layer 2, 23. x
+Layer 2, 24. c
+Layer 3, 25. [ERROR: Unsupported key code: f1]
+Layer 3, 26. [ERROR: Unsupported key code: f2]
+Layer 3, 27. [ERROR: Unsupported key code: f3]
+Layer 3, 28. [ERROR: Unsupported key code: f4]
+Layer 3, 29. [ERROR: Unsupported key code: f5]
+Layer 3, 30. [ERROR: Unsupported key code: f6]
+Layer 3, 31. [ERROR: Unsupported key code: f7]
+Layer 3, 32. [ERROR: Unsupported key code: f8]
+Layer 3, 33. [ERROR: Unsupported key code: f9]
+Layer 3, 34. [ERROR: Unsupported key code: f10]
+Layer 3, 35. [ERROR: Unsupported key code: f11]
+Layer 3, 36. [ERROR: Unsupported key code: f12]

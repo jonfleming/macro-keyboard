@@ -32,6 +32,14 @@ python converter.py upload     # macros.txt -> macros.yaml -> keypad
 
 `upload` validates the YAML with `ch57x-keyboard-tool` before flashing.
 
+To edit on a picture of the keypad instead of the text file:
+
+```powershell
+python converter.py gui
+```
+
+Click a key, or the turn-left, press, and turn-right rows under a knob. Edit the macro, then Save or Upload. Save writes `macros.txt`. Upload also flashes the keypad.
+
 To open Notepad (or `$EDITOR`), then convert and upload when you close it:
 
 ```powershell
@@ -50,6 +58,7 @@ python converter.py edit
 | `flash` | Upload the existing YAML only |
 | `validate` | Convert `.txt` → `.yaml` and validate, no flash |
 | `edit` | Download, open an editor, then upload |
+| `gui` | Edit keys and knobs on a picture of the keypad |
 
 Global options:
 
@@ -242,6 +251,7 @@ That last button is empty. The knob turns volume down, click mutes, turn the oth
 | `macros.yaml` | Last known keypad config; generated from the `.txt` |
 | `macros.yaml.bak` | Previous YAML, written just before each convert |
 | `converter.py` | CLI |
+| `keypad_gui.py` | Visual editor |
 | `macro_parser.py` | YAML ↔ text conversion |
 
 If `ch57x-keyboard-tool` is not on `PATH`, it is also looked up in `%USERPROFILE%\.cargo\bin`.

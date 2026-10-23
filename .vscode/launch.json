@@ -20,6 +20,15 @@
             "cwd": "${workspaceFolder}"
         },
         {
+            "name": "Visual editor",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "converter.py",
+            "args": ["gui"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
             "name": "Validate mapping",
             "type": "debugpy",
             "request": "launch",

@@ -25,7 +25,7 @@ def main(argv: list[str] | None = None) -> int:
             "The keypad firmware cannot be read back. Local macros.yaml is the\n"
             "current config. Typical loop:\n"
             "  python converter.py download   # yaml -> txt\n"
-            "  # edit macros.txt\n"
+            "  # edit macros.txt, or: python converter.py gui\n"
             "  python converter.py upload     # txt -> yaml -> keypad"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -75,6 +75,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Editor command (default: $EDITOR, or notepad on Windows)",
     )
     sub.add_parser("validate", help="Convert .txt to YAML and validate it")
+    sub.add_parser("gui", help="Open a visual editor for the keys and knobs")
 
     args = parser.parse_args(argv)
     try:
@@ -103,6 +104,10 @@ def run(args: argparse.Namespace) -> int:
     if args.command == "validate":
         cmd_to_yaml(txt_path, yaml_path)
         return cmd_validate(yaml_path, args.tool)
+    if args.command == "gui":
+        from keypad_gui import run_gui
+
+        return run_gui(txt_path, yaml_path, args.tool)
     raise ValueError(f"Unknown command: {args.command}")
 
 

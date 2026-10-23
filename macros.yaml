@@ -1,3 +1,4 @@
+model: ch57x-1
 orientation: normal
 
 rows: 3
@@ -6,46 +7,46 @@ knobs: 3
 
 layers:
   - buttons:
-      - ["shift-a,m,i,c,u,s,Dot,4,4,Enter", "j,o,n,Tab,shift-a,m,i,c,u,s,Dot,4,4,Enter", "shift-r,a,s,p,b,e,r,r,y,Space,shift-p,i", "h,o,m,e,Enter,c,l,s,Enter"]
+      - ["shift-a,m,i,c,u,s,dot,4,4,enter", "j,o,n,tab,shift-a,m,i,c,u,s,dot,4,4,enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,enter,c,l,s,enter"]
       - ["e", "f", "g", "h"]
       - ["ctrl-b", "alt-b", "backspace", "delete"]
     knobs:
-      - ccw: "Previous"
-        gpress: "Play"
-        cw: "Next"
-      - ccw: "Win-Left"
-        press: "Calculator"
-        cw: "Win-Right"
+      - ccw: "previous"
+        press: "play"
+        cw: "next"
+      - ccw: "win-left"
+        press: "calculator"
+        cw: "win-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
 
   - buttons:
-      - ["Escape", "w", "e", "r"] # click", "lclick", "rclick", "mclick"]
-      - ["a", "s", "d", "f"] # click+rclick", "wheeldown", "shift-wheelup", "ctrl-wheelup"]
-      - ["shift", "z", "x", "c"] #alt-wheelup", "ctrl-click", "wheelup", "wheelup"]
+      - ["escape", "w", "e", "r"]
+      - ["a", "s", "d", "f"]
+      - ["y", "z", "x", "c"]
     knobs:
-      - ccw: "Left"
-        press: "Home"
-        cw: "Right"
-      - ccw: "Ctrl-Left"
-        press: "End"
-        cw: "Ctrl-Right"
+      - ccw: "left"
+        press: "home"
+        cw: "right"
+      - ccw: "ctrl-left"
+        press: "end"
+        cw: "ctrl-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
 
   - buttons:
-      - ["F1", "F2", "F3", "F4" ]
-      - ["F5", "F6", "F7", "F8"]
-      - ["F9", "F10", "F11", "F12"]
+      - ["ctrl-shift-alt-f1", "ctrl-shift-alt-f2", "ctrl-shift-alt-f3", "ctrl-shift-alt-f4"]
+      - ["ctrl-shift-alt-f5", "ctrl-shift-alt-f6", "ctrl-shift-alt-f7", "ctrl-shift-alt-f8"]
+      - ["ctrl-shift-alt-f9", "ctrl-shift-alt-f10", "ctrl-shift-alt-f11", "ctrl-shift-alt-f12"]
     knobs:
-      - ccw: "Left"
-        press: "Home"
-        cw: "Right"
-      - ccw: "Ctrl-Left"
-        press: "End"
-        cw: "Ctrl-Right"
+      - ccw: "wheeldown"
+        press: "click"
+        cw: "wheelup"
+      - ccw: "ctrl-wheeldown"
+        press: "rclick"
+        cw: "ctrl-wheelup"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"

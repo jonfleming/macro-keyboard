@@ -1,3 +1,4 @@
+model: ch57x-1
 orientation: normal
 
 rows: 3
@@ -6,47 +7,46 @@ knobs: 3
 
 layers:
   - buttons:
-      - ["shift-a,m,i,c,u,s,dot,4,4,Enter", "j,o,n,Tab,shift-a,m,i,c,u,s,dot,4,4,Enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,Enter,c,l,s,Enter"]
-      - ["3,3,9,3", "t,e,s,t", "g", "h"]
-      - ["s,s,h,space,p,i,shift-2,1,0,dot,0,dot,0,dot,2", "j", "k", "l"]
+      - ["shift-a,m,i,c,u,s,dot,4,4,enter", "j,o,n,tab,shift-a,m,i,c,u,s,dot,4,4,enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,enter,c,l,s,enter"]
+      - ["e", "f", "g", "h"]
+      - ["ctrl-b", "alt-b", "backspace", "delete"]
     knobs:
-      - ccw: "Previous"
-        gpress: "Play"
-        cw: "Next"
-      - ccw: "Win-Left"
-        press: "Calculator"
-        cw: "Win-Right"
+      - ccw: "previous"
+        press: "play"
+        cw: "next"
+      - ccw: "win-left"
+        press: "calculator"
+        cw: "win-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
 
   - buttons:
-      - ["Escape", "w", "e", "r"]
+      - ["escape", "w", "e", "r"]
       - ["a", "s", "d", "f"]
       - ["shift", "z", "x", "c"]
     knobs:
-      - ccw: "Left"
-        press: "Home"
-        cw: "Right"
-      - ccw: "Ctrl-Left"
-        press: "End"
-        cw: "Ctrl-Right"
+      - ccw: "left"
+        press: "home"
+        cw: "right"
+      - ccw: "ctrl-left"
+        press: "end"
+        cw: "ctrl-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
 
   - buttons:
-      - ["F1", "F2", "F3", "F4"]
-      - ["F5", "F6", "F7", "F8"]
-      - ["F9", "F10", "F11", "F12"]
+      - ["f1", "f2", "f3", "f4"]
+      - ["f5", "f6", "f7", "f8"]
+      - ["f9", "f10", "f11", "f12"]
     knobs:
-      - ccw: "Left"
-        press: "Home"
-        cw: "Right"
-      - ccw: "Ctrl-Left"
-        press: "End"
-        cw: "Ctrl-Right"
+      - ccw: "left"
+        press: "home"
+        cw: "right"
+      - ccw: "ctrl-left"
+        press: "end"
+        cw: "ctrl-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
-

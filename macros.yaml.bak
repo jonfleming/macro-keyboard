@@ -1,0 +1,52 @@
+model: ch57x-1
+orientation: normal
+
+rows: 3
+columns: 4
+knobs: 3
+
+layers:
+  - buttons:
+      - ["shift-a,m,i,c,u,s,dot,4,4,enter", "j,o,n,tab,shift-a,m,i,c,u,s,dot,4,4,enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,enter,c,l,s,enter"]
+      - ["e", "f", "g", "h"]
+      - ["ctrl-b", "alt-b", "backspace", "delete"]
+    knobs:
+      - ccw: "previous"
+        press: "play"
+        cw: "next"
+      - ccw: "win-left"
+        press: "calculator"
+        cw: "win-right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["escape", "w", "e", "r"]
+      - ["a", "s", "d", "f"]
+      - ["y", "z", "x", "c"]
+    knobs:
+      - ccw: "left"
+        press: "home"
+        cw: "right"
+      - ccw: "ctrl-left"
+        press: "end"
+        cw: "ctrl-right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"
+
+  - buttons:
+      - ["ctrl-shift-alt-f1", "ctrl-shift-alt-f2", "ctrl-shift-alt-f3", "ctrl-shift-alt-f4"]
+      - ["ctrl-shift-alt-f5", "ctrl-shift-alt-f6", "ctrl-shift-alt-f7", "ctrl-shift-alt-f8"]
+      - ["ctrl-shift-alt-f9", "ctrl-shift-alt-f10", "ctrl-shift-alt-f11", "ctrl-alt-f12"]
+    knobs:
+      - ccw: "left"
+        press: "home"
+        cw: "right"
+      - ccw: "ctrl-left"
+        press: "end"
+        cw: "ctrl-right"
+      - ccw: "volumedown"
+        press: "mute"
+        cw: "volumeup"

@@ -1,23 +1,41 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Current File",
+            "name": "Download (yaml → txt)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "converter.py",
+            "args": ["download"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Upload (txt → yaml → keypad)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "converter.py",
+            "args": ["upload"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Validate mapping",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "converter.py",
+            "args": ["validate"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
         },
         {
             "name": "Test Macro Parser",
             "type": "debugpy",
             "request": "launch",
-            "program": "macro_parser.py",
-            "console": "integratedTerminal"
+            "module": "unittest",
+            "args": ["test_macro_parser.py"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
         }
-
     ]
 }

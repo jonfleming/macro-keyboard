@@ -8,33 +8,33 @@ knobs: 3
 layers:
   - buttons:
       - ["shift-a,m,i,c,u,s,dot,4,4,enter", "j,o,n,tab,shift-a,m,i,c,u,s,dot,4,4,enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,enter,c,l,s,enter"]
-      - ["e", "f", "g", "h"]
-      - ["ctrl-b", "alt-b", "backspace", "delete"]
+      - ["shift-s,shift-e,shift-f,0,5,0,7,9,5,shift-1", "backspace", "shift-left", "shift-right"]
+      - ["space", "win-b", "left", "right"]
     knobs:
-      - ccw: "previous"
-        press: "play"
-        cw: "next"
-      - ccw: "win-left"
-        press: "calculator"
-        cw: "win-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
+      - ccw: "ctrl-win-left"
+        press: "calculator"
+        cw: "ctrl-win-right"
+      - ccw: "ctrl-shift-alt-j"
+        press: "click"
+        cw: "ctrl-shift-alt-k"
 
   - buttons:
-      - ["escape", "w", "e", "r"]
-      - ["a", "s", "d", "f"]
-      - ["y", "z", "x", "c"]
+      - ["z", "slash", "shift-s,shift-e,shift-f,0,5,0,7,9,5,shift-1", "h,o,m,e,enter,c,l,s,enter"]
+      - ["win-z", "backspace", "shift-left", "shift-right"]
+      - ["space", "win-b", "left", "right"]
     knobs:
-      - ccw: "left"
-        press: "home"
-        cw: "right"
-      - ccw: "ctrl-left"
-        press: "end"
-        cw: "ctrl-right"
       - ccw: "volumedown"
         press: "mute"
         cw: "volumeup"
+      - ccw: "ctrl-shift-alt-left"
+        press: "click"
+        cw: "ctrl-shift-alt-right"
+      - ccw: "ctrl-shift-alt-j"
+        press: "click"
+        cw: "ctrl-shift-alt-k"
 
   - buttons:
       - ["ctrl-shift-alt-f1", "ctrl-shift-alt-f2", "ctrl-shift-alt-f3", "ctrl-shift-alt-f4"]

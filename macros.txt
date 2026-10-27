@@ -22,34 +22,34 @@ knobs: 3
 [1,2] jon{tab}Amicus.44{enter}
 [1,3] Raspberry Pi
 [1,4] home{enter}cls{enter}
-[2,1] e
-[2,2] f
-[2,3] g
-[2,4] h
-[3,1] {ctrl-b}
-[3,2] {alt-b}
-[3,3] {backspace}
-[3,4] {delete}
-knob 1: {previous} | {play} | {next}
-knob 2: {win-left} | {calculator} | {win-right}
-knob 3: {volumedown} | {mute} | {volumeup}
+[2,1] SEF050795!
+[2,2] {backspace}
+[2,3] {shift-left}
+[2,4] {shift-right}
+[3,1] {space}
+[3,2] {win-b}
+[3,3] {left}
+[3,4] {right}
+knob 1: {volumedown} | {mute} | {volumeup}
+knob 2: {ctrl-win-left} | {calculator} | {ctrl-win-right}
+knob 3: {ctrl-shift-alt-j} | {click} | {ctrl-shift-alt-k}
 
 === Layer 2 ===
-[1,1] {escape}
-[1,2] w
-[1,3] e
-[1,4] r
-[2,1] a
-[2,2] s
-[2,3] d
-[2,4] f
-[3,1] y
-[3,2] z
-[3,3] x
-[3,4] c
-knob 1: {left} | {home} | {right}
-knob 2: {ctrl-left} | {end} | {ctrl-right}
-knob 3: {volumedown} | {mute} | {volumeup}
+[1,1] z
+[1,2] /
+[1,3] SEF050795!
+[1,4] home{enter}cls{enter}
+[2,1] {win-z}
+[2,2] {backspace}
+[2,3] {shift-left}
+[2,4] {shift-right}
+[3,1] {space}
+[3,2] {win-b}
+[3,3] {left}
+[3,4] {right}
+knob 1: {volumedown} | {mute} | {volumeup}
+knob 2: {ctrl-shift-alt-left} | {click} | {ctrl-shift-alt-right}
+knob 3: {ctrl-shift-alt-j} | {click} | {ctrl-shift-alt-k}
 
 === Layer 3 ===
 [1,1] {ctrl-shift-alt-f1}

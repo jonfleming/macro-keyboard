@@ -23,7 +23,7 @@ knobs: 3
 [1,3] Raspberry Pi
 [1,4] home{enter}cls{enter}
 [2,1] SEF050795!
-[2,2] {backspace}
+[2,2] {ctrl-shift-alt-delete}
 [2,3] {shift-left}
 [2,4] {shift-right}
 [3,1] {space}
@@ -40,7 +40,7 @@ knob 3: {ctrl-shift-alt-j} | {click} | {ctrl-shift-alt-k}
 [1,3] SEF050795!
 [1,4] home{enter}cls{enter}
 [2,1] {win-z}
-[2,2] {backspace}
+[2,2] {ctrl-shift-alt-delete}
 [2,3] {shift-left}
 [2,4] {shift-right}
 [3,1] {space}

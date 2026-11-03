@@ -1,8 +1,8 @@
 local modifiers = {"ctrl", "alt", "shift"}
 local panPixels = 60
 local dragPixels = 8       -- slow turn, pixels per detent
-local dragPixelsFast = 32  -- fast turn, pixels per detent
-local holdSeconds = 2      -- how long the button stays down after the knob stops
+local dragPixelsFast = 120 -- fast turn, pixels per detent
+local holdSeconds = 1.25   -- how long the button stays down after the knob stops
 local slowGap = 0.15       -- seconds between detents at or above this stay precise
 local fastGap = 0.04       -- seconds between detents at or below this use dragPixelsFast
 local types = hs.eventtap.event.types
@@ -41,11 +41,13 @@ local function postMouse(eventType, x, y, dx, dy)
   -- Larger steps sleep less so a fast spin does not queue up behind the animation.
   if eventType ~= types.leftMouseUp then
     local mag = math.abs(dx or 0)
-    local pause = 20000
-    if mag >= 8 then
+    local pause = 12000
+    if mag >= 40 then
+      pause = 2000
+    elseif mag >= 16 then
+      pause = 4000
+    elseif mag >= 8 then
       pause = 6000
-    elseif mag >= 4 then
-      pause = 10000
     end
     hs.timer.usleep(pause)
   end
@@ -78,17 +80,21 @@ local function acceleratedPixels()
     tGap = math.min(1, (slowGap - gap) / (slowGap - fastGap))
   end
   local tQueue = math.min(1, math.max(0, ticksWaiting - 1) / 3)
+  -- Linear, not squared: a moderately quick turn already covers a lot of ground.
   local t = math.max(tGap, tQueue)
-  t = t * t
   return math.floor(dragPixels + (dragPixelsFast - dragPixels) * t + 0.5)
 end
 
 local function takeStep(remain)
   local mag = math.abs(remain)
   local cap = 2
-  if mag >= 24 then
+  if mag >= 80 then
+    cap = 40
+  elseif mag >= 40 then
+    cap = 20
+  elseif mag >= 16 then
     cap = 8
-  elseif mag >= 12 then
+  elseif mag >= 8 then
     cap = 4
   end
   if remain < 0 then
@@ -163,8 +169,33 @@ hs.hotkey.bind(modifiers, "delete", function()
     up:setProperty(props.mouseEventClickState, 1)
     up:post()
     hs.timer.usleep(30000)
-    hs.eventtap.keyStroke({}, "delete", 0)
+    -- The keypad's Delete down is still held: its up never arrives. keyStroke
+    -- with a 0 delay posts the up in the same instant as the down, and macOS
+    -- drops that up. Release the stuck key, then tap Delete with a real gap.
+    hs.eventtap.event.newKeyEvent(modifiers, "delete", false):post()
+    hs.eventtap.event.newKeyEvent({}, "delete", false):post()
+    hs.timer.usleep(20000)
+    hs.eventtap.event.newKeyEvent({}, "delete", true):post()
+    hs.timer.usleep(40000)
+    hs.eventtap.event.newKeyEvent({}, "delete", false):post()
   end)
 end)
 hs.hotkey.bind(modifiers, "j", function() hs.eventtap.scrollWheel({panPixels, 0}, {}, "pixel") end)
 hs.hotkey.bind(modifiers, "k", function() hs.eventtap.scrollWheel({-panPixels, 0}, {}, "pixel") end)
+
+keyLog = hs.eventtap.new(
+  {hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp, hs.eventtap.event.types.flagsChanged},
+  function(e)
+    local t = e:getType()
+    local kind = (t == hs.eventtap.event.types.keyDown and "DOWN")
+      or (t == hs.eventtap.event.types.keyUp and "UP") or "FLAGS"
+    local flags = {}
+    for k, v in pairs(e:getFlags()) do if v then table.insert(flags, k) end end
+    table.sort(flags)
+    local code = e:getKeyCode()
+    print(string.format("%s  keycode=%d (%s)  flags=[%s]  char=%q",
+      kind, code, hs.keycodes.map[code] or "?", table.concat(flags, "+"),
+      e:getCharacters(true) or ""))
+    return false
+  end)
+keyLog:start()

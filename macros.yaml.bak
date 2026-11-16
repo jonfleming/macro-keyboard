@@ -8,7 +8,7 @@ knobs: 3
 layers:
   - buttons:
       - ["shift-a,m,i,c,u,s,dot,4,4,enter", "j,o,n,tab,shift-a,m,i,c,u,s,dot,4,4,enter", "shift-r,a,s,p,b,e,r,r,y,space,shift-p,i", "h,o,m,e,enter,c,l,s,enter"]
-      - ["shift-s,shift-e,shift-f,0,5,0,7,9,5,shift-1", "backspace", "shift-left", "shift-right"]
+      - ["shift-s,shift-e,shift-f,0,5,0,7,9,5,shift-1", "ctrl-shift-alt-backspace", "shift-left", "shift-right"]
       - ["space", "win-b", "left", "right"]
     knobs:
       - ccw: "volumedown"
@@ -23,7 +23,7 @@ layers:
 
   - buttons:
       - ["z", "slash", "shift-s,shift-e,shift-f,0,5,0,7,9,5,shift-1", "h,o,m,e,enter,c,l,s,enter"]
-      - ["win-z", "backspace", "shift-left", "shift-right"]
+      - ["win-z", "ctrl-shift-alt-backspace", "shift-left", "shift-right"]
       - ["space", "win-b", "left", "right"]
     knobs:
       - ccw: "volumedown"
@@ -32,9 +32,9 @@ layers:
       - ccw: "ctrl-shift-alt-left"
         press: "click"
         cw: "ctrl-shift-alt-right"
-      - ccw: "ctrl-shift-alt-j"
+      - ccw: "ctrl-shift-alt-left"
         press: "click"
-        cw: "ctrl-shift-alt-k"
+        cw: "ctrl-shift-alt-right"
 
   - buttons:
       - ["ctrl-shift-alt-f1", "ctrl-shift-alt-f2", "ctrl-shift-alt-f3", "ctrl-shift-alt-f4"]

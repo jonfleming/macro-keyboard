@@ -431,99 +431,219 @@ def default_mapping() -> Mapping:
     return mapping
 
 
+# Gap between the key block and the knob column, and between that column and
+# the action pills. The chassis bezel stays inside the pill gap.
+_SIDE_GAP = 20.0
+_PILL_GAP_X = 16.0
+_CHASSIS_BEZEL = 10.0
+
+
+def _three_knobs(grid_h: float, key: float):
+    """Place the three encoders the way they sit on the keypad.
+
+    Knobs 1 and 2 are beside the keys. Knob 3 is the large encoder: its top
+    rises next to the bottom row, and the rest hangs in the lower-right bay.
+    """
+    r_small = min(46.0, max(8.0, key * 0.42))
+    r_large = min(74.0, max(r_small + 8.0, key * 0.68))
+    cy1 = grid_h * 0.20
+    cy2 = grid_h * 0.56
+    fitted = min(
+        r_small,
+        cy1 - 8.0,
+        (cy2 - cy1 - 12.0) / 2.0,
+        grid_h - cy2 - 6.0,
+    )
+    r_small = fitted if fitted >= 8.0 else r_small
+    cy1 = max(cy1, r_small + 8.0)
+    cy2 = max(cy2, cy1 + r_small * 2.0 + 12.0)
+    cy3 = max(grid_h + r_large * 0.40, cy2 + r_small + r_large + 12.0)
+    height = cy3 + r_large + 14.0
+    return [r_small, r_small, r_large], [cy1, cy2, cy3], height
+
+
+def _even_knobs(grid_h: float, key: float, nknobs: int):
+    radius = min(56.0, max(8.0, key * 0.46))
+    natural = nknobs * (radius * 2.0 + 14.0) + 14.0
+    height = max(grid_h, natural)
+    slot = height / nknobs
+    radius = min(radius, max(6.0, slot / 2.0 - 4.0))
+    centers = [slot * (index + 0.5) for index in range(nknobs)]
+    return [radius] * nknobs, centers, height
+
+
+def _pill_height(centers: list[float], column_h: float) -> float:
+    edges = [0.0]
+    for above, below in zip(centers, centers[1:]):
+        edges.append((above + below) / 2.0)
+    edges.append(column_h)
+    shortest = min(right - left for left, right in zip(edges, edges[1:]))
+    pill_gap = 4.0
+    room = shortest - 8.0 - pill_gap * 2.0
+    return min(24.0, max(4.0, room / 3.0))
+
+
 def compute_layout(
     width: float, height: float, rows: int, cols: int, nknobs: int
 ) -> DeviceLayout:
     rows = max(int(rows), 1)
     cols = max(int(cols), 1)
     nknobs = max(int(nknobs), 0)
-    margin = 16
-    caption_h = 28
+    margin = 16.0
+    caption_h = 28.0
     avail_w = max(80.0, width - margin * 2)
     avail_h = max(80.0, height - margin * 2 - caption_h)
     gap = 10.0
-    plate_gap = 14.0
+    max_key = 116.0
 
-    plate_h = min(188.0, avail_h * 0.30) if nknobs else 0.0
-    stack_h = min(102.0, avail_h * 0.18) if nknobs else 0.0
-    overhead = (plate_h + stack_h + plate_gap) if nknobs else 0.0
-    grid_room = max(36.0, avail_h - overhead)
-    key = min(
-        (avail_w - gap * (cols - 1)) / cols,
-        (grid_room - gap * (rows - 1)) / rows,
-    )
-    key = min(max(key, 8.0), 116.0)
-    grid_w = cols * key + gap * (cols - 1)
-    grid_h = rows * key + gap * (rows - 1)
+    def grid_size(key: float) -> tuple[float, float]:
+        return (
+            cols * key + gap * (cols - 1),
+            rows * key + gap * (rows - 1),
+        )
 
-    content_w = grid_w
-    if nknobs:
-        content_w = min(avail_w, max(grid_w, 150.0 * nknobs))
-    content_h = overhead + grid_h
-    if content_h > avail_h and nknobs:
-        spare = content_h - avail_h
-        plate_h = max(110.0, plate_h - spare * 0.5)
-        stack_h = max(68.0, stack_h - spare * 0.25)
-        overhead = plate_h + stack_h + plate_gap
-        grid_room = max(36.0, avail_h - overhead)
-        key = min(key, (grid_room - gap * (rows - 1)) / rows)
+    def place_keys(x: float, y: float, key: float) -> list[KeyGeom]:
+        keys = []
+        for row in range(rows):
+            for col in range(cols):
+                left = x + col * (key + gap)
+                top = y + row * (key + gap)
+                keys.append(KeyGeom(row, col, (left, top, left + key, top + key)))
+        return keys
+
+    if nknobs == 0:
+        key = min(
+            (avail_w - gap * (cols - 1)) / cols,
+            (avail_h - gap * (rows - 1)) / rows,
+            max_key,
+        )
         key = max(key, 8.0)
-        grid_w = cols * key + gap * (cols - 1)
-        grid_h = rows * key + gap * (rows - 1)
-        content_w = min(avail_w, max(grid_w, content_w))
-        content_h = overhead + grid_h
+        grid_w, grid_h = grid_size(key)
+        x0 = margin + (avail_w - grid_w) / 2
+        y0 = margin + max(0.0, (avail_h - grid_h) / 2)
+        return DeviceLayout(None, [], place_keys(x0, y0, key))
 
-    x0 = margin + (avail_w - content_w) / 2
-    y0 = margin + max(0.0, (avail_h - content_h) / 2)
-    grid_x = x0 + (content_w - grid_w) / 2
-    grid_y = y0 + overhead
+    def measure(key: float, pill_w: float):
+        grid_w, grid_h = grid_size(key)
+        if nknobs == 3:
+            radii, centers, column_h = _three_knobs(grid_h, key)
+        else:
+            radii, centers, column_h = _even_knobs(grid_h, key, nknobs)
+        plate_w = max(radii) * 2.0 + 28.0
+        content_w = grid_w + _SIDE_GAP + plate_w + _PILL_GAP_X + pill_w
+        content_h = max(grid_h, column_h)
+        return {
+            "grid_w": grid_w,
+            "grid_h": grid_h,
+            "radii": radii,
+            "centers": centers,
+            "column_h": column_h,
+            "plate_w": plate_w,
+            "content_w": content_w,
+            "content_h": content_h,
+            "pill_h": _pill_height(centers, column_h),
+        }
 
-    keys = []
-    for row in range(rows):
-        for col in range(cols):
-            x = grid_x + col * (key + gap)
-            y = grid_y + row * (key + gap)
-            keys.append(KeyGeom(row, col, (x, y, x + key, y + key)))
+    def fits(key: float, pill_w: float) -> bool:
+        size = measure(key, pill_w)
+        return size["content_w"] <= avail_w + 0.1 and size["content_h"] <= avail_h + 0.1
 
-    plate = None
+    pill_w = 150.0
+    if not fits(8.0, pill_w):
+        pill_w = 56.0
+        if fits(8.0, pill_w):
+            low, high = 56.0, 150.0
+            for _ in range(16):
+                mid = (low + high) / 2.0
+                if fits(8.0, mid):
+                    pill_w = mid
+                    low = mid
+                else:
+                    high = mid
+
+    key = 8.0
+    if fits(key, pill_w):
+        low, high = 8.0, max_key
+        for _ in range(22):
+            mid = (low + high) / 2.0
+            if fits(mid, pill_w):
+                key = mid
+                low = mid
+            else:
+                high = mid
+
+    sized = measure(key, pill_w)
+    origin_x = margin + max(0.0, (avail_w - sized["content_w"]) / 2.0)
+    origin_y = margin + max(0.0, (avail_h - sized["content_h"]) / 2.0)
+    # Keys stay top-aligned with the encoders, so extra column height hangs
+    # below them as the lower bay. A shorter column is centered on the keys.
+    grid_y = origin_y
+    column_y = origin_y
+    if sized["column_h"] < sized["grid_h"] - 1:
+        column_y += (sized["grid_h"] - sized["column_h"]) / 2.0
+
+    plate_x = origin_x + sized["grid_w"] + _SIDE_GAP
+    plate = (
+        plate_x,
+        column_y,
+        plate_x + sized["plate_w"],
+        column_y + sized["column_h"],
+    )
+    pill_h = sized["pill_h"]
+    pill_gap = 4.0
+    stack_h = pill_h * 3.0 + pill_gap * 2.0
+    edges = [0.0]
+    centers = sized["centers"]
+    for above, below in zip(centers, centers[1:]):
+        edges.append((above + below) / 2.0)
+    edges.append(sized["column_h"])
+
     knobs: list[KnobGeom] = []
-    if nknobs:
-        plate = (x0, y0, x0 + content_w, y0 + plate_h)
-        weights = [0.92, 0.92, 1.22] if nknobs == 3 else [1.0] * nknobs
-        total = sum(weights)
-        cursor = x0
-        columns: list[tuple[float, float]] = []
-        for weight in weights:
-            span = content_w * weight / total
-            columns.append((cursor, cursor + span))
-            cursor += span
-        pill_gap = 3.0
-        pill_h = (stack_h - 4 - pill_gap * 2) / 3
-        stack_top = y0 + plate_h + 2
-        for index, (left, right) in enumerate(columns):
-            span = right - left
-            cx = (left + right) / 2
-            y_frac = 0.50
-            radius_frac = 0.30
-            span_frac = 0.30
-            if nknobs == 3 and index == 1:
-                y_frac = 0.44
-            if nknobs == 3 and index == nknobs - 1:
-                y_frac = 0.54
-                radius_frac = 0.40
-                span_frac = 0.34
-            cy = y0 + plate_h * y_frac
-            radius = min(plate_h * radius_frac, span * span_frac)
-            radius = min(radius, cy - (y0 + 8), (y0 + plate_h - 6) - cy)
-            radius = max(radius, 12.0)
-            pill_w = max(24.0, span - 8)
-            px = cx - pill_w / 2
-            pills = {}
-            for action_index, action in enumerate(KNOB_ACTIONS):
-                py = stack_top + action_index * (pill_h + pill_gap)
-                pills[action] = (px, py, px + pill_w, py + pill_h)
-            knobs.append(KnobGeom(index, (cx, cy), radius, pills))
-    return DeviceLayout(plate, knobs, keys)
+    for index, (radius, center) in enumerate(zip(sized["radii"], centers)):
+        radius = min(radius, sized["plate_w"] / 2.0 - 8.0)
+        cx = plate_x + sized["plate_w"] / 2.0
+        cy = column_y + center
+        band_top = column_y + edges[index]
+        band_bot = column_y + edges[index + 1]
+        py0 = cy - stack_h / 2.0
+        py0 = min(max(py0, band_top + 2.0), band_bot - stack_h - 2.0)
+        px = plate[2] + _PILL_GAP_X
+        pills = {}
+        for action_index, action in enumerate(KNOB_ACTIONS):
+            py = py0 + action_index * (pill_h + pill_gap)
+            pills[action] = (px, py, px + pill_w, py + pill_h)
+        knobs.append(KnobGeom(index, (cx, cy), radius, pills))
+    return DeviceLayout(plate, knobs, place_keys(origin_x, grid_y, key))
+
+
+def chassis_shape(layout: DeviceLayout):
+    """The device body: a rounded rect, or an L when the knob bay hangs below."""
+    if not layout.keys and layout.plate is None:
+        return None
+    pad_x, pad_top, pad_bot = 16.0, 14.0, 16.0
+    if layout.keys:
+        x0 = min(key.box[0] for key in layout.keys) - pad_x
+        y0 = min(key.box[1] for key in layout.keys) - pad_top
+        key_r = max(key.box[2] for key in layout.keys)
+        key_b = max(key.box[3] for key in layout.keys)
+    else:
+        px1, py1, px2, py2 = layout.plate
+        return ("rect", (px1 - pad_x, py1 - pad_top, px2 + _CHASSIS_BEZEL, py2 + pad_bot))
+
+    if layout.plate is None:
+        return ("rect", (x0, y0, key_r + pad_x, key_b + pad_bot))
+
+    px1, py1, px2, py2 = layout.plate
+    y0 = min(y0, py1 - pad_top)
+    x1 = max(key_r + pad_x, px2 + _CHASSIS_BEZEL)
+    y1 = max(key_b + pad_bot, py2 + pad_bot)
+    sy = key_b + pad_bot
+    sx = min(px1 - 8.0, key_r + 12.0)
+    leg_is_real = py2 > sy + 36.0
+    has_room = sx > x0 + 52 and x1 > sx + 52 and sy > y0 + 52 and y1 > sy + 52
+    if leg_is_real and has_room and sx < px1:
+        return ("l", (x0, y0, x1, y1, sx, sy))
+    return ("rect", (x0, y0, x1, y1))
 
 
 def _outset(box: tuple[float, float, float, float], pad: float):
@@ -549,6 +669,37 @@ def _round_rect(canvas: tk.Canvas, box, radius: float, **kwargs):
         x1, y1,
     ]
     return canvas.create_polygon(points, smooth=True, splinesteps=20, **kwargs)
+
+
+def _append_arc(points: list[float], cx: float, cy: float, radius: float, a0: float, a1: float):
+    steps = 8
+    for step in range(steps + 1):
+        angle = a0 + (a1 - a0) * step / steps
+        points.append(cx + radius * math.cos(angle))
+        points.append(cy + radius * math.sin(angle))
+
+
+def _l_points(x0, y0, x1, y1, sx, sy, radius=26.0, inner=16.0):
+    """Outline of the keypad body: key block on the left, knob bay on the lower right."""
+    radius = min(radius, (x1 - x0) / 2, (sy - y0) / 2, (y1 - sy) / 2, (x1 - sx) / 2)
+    inner = min(inner, radius, (sx - x0) / 2, (x1 - sx) / 2, (y1 - sy) / 2)
+    points: list[float] = []
+    _append_arc(points, x0 + radius, y0 + radius, radius, math.pi, 3 * math.pi / 2)
+    _append_arc(points, x1 - radius, y0 + radius, radius, -math.pi / 2, 0)
+    _append_arc(points, x1 - radius, y1 - radius, radius, 0, math.pi / 2)
+    _append_arc(points, sx + radius, y1 - radius, radius, math.pi / 2, math.pi)
+    _append_arc(points, sx - inner, sy + inner, inner, 0, -math.pi / 2)
+    _append_arc(points, x0 + radius, sy - radius, radius, math.pi / 2, math.pi)
+    return points
+
+
+def _draw_l(canvas: tk.Canvas, geom, **kwargs):
+    x0, y0, x1, y1, sx, sy = geom
+    return canvas.create_polygon(
+        _l_points(x0, y0, x1, y1, sx, sy),
+        joinstyle="round",
+        **kwargs,
+    )
 
 
 class KeypadApp(tk.Tk):
@@ -673,7 +824,7 @@ class KeypadApp(tk.Tk):
             text=(
                 "The picture is macros.txt.\n"
                 "[1,1] is the upper-left key.\n"
-                "Knob 1 is the left knob. Each knob has\n"
+                "Knob 1 is the top knob. Each knob has\n"
                 "turn left, press, and turn right.\n\n"
                 "Type letters as themselves. Put keys and\n"
                 "combos in braces, such as {ctrl-c} or\n"
@@ -1236,26 +1387,25 @@ class KeypadApp(tk.Tk):
         )
 
     def _draw_device(self, layout: DeviceLayout) -> None:
-        boxes = [key.box for key in layout.keys]
-        if layout.plate:
-            boxes.append(layout.plate)
-        for knob in layout.knobs:
-            boxes.extend(knob.pills.values())
-        if not boxes:
+        shape = chassis_shape(layout)
+        if shape is None:
             return
-        chassis = (
-            min(box[0] for box in boxes) - 18,
-            min(box[1] for box in boxes) - 16,
-            max(box[2] for box in boxes) + 18,
-            max(box[3] for box in boxes) + 18,
-        )
-        _round_rect(self.canvas, chassis, 26, fill=CHASSIS, outline="#232830")
+        kind, geom = shape
+        if kind == "l":
+            _draw_l(self.canvas, geom, fill=CHASSIS, outline="#232830")
+        else:
+            _round_rect(self.canvas, geom, 26, fill=CHASSIS, outline="#232830")
         if layout.plate:
             _round_rect(self.canvas, layout.plate, 20, fill=SILVER, outline=SILVER_EDGE)
             px1, py1, px2, _py2 = layout.plate
-            for offset, color in enumerate(("#d5dde4", "#c3ccd3", "#b4bdc5", "#aeb6be")):
-                y = py1 + 16 + offset * 3
-                self.canvas.create_line(px1 + 24, y, px2 - 24, y, fill=color)
+            knob_top = py1 + 28
+            if layout.knobs:
+                top = min(layout.knobs, key=lambda knob: knob.center[1])
+                knob_top = top.center[1] - top.radius
+            if knob_top - py1 >= 28 and px2 - px1 >= 56:
+                for offset, color in enumerate(("#d5dde4", "#c3ccd3", "#b4bdc5", "#aeb6be")):
+                    y = py1 + 16 + offset * 3
+                    self.canvas.create_line(px1 + 18, y, px2 - 18, y, fill=color)
 
         layer = self.current_layer()
         rows = self.mapping.rows

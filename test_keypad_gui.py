@@ -5,6 +5,7 @@ from pathlib import Path
 from keypad_gui import (
     KeypadApp,
     cell_text,
+    chassis_shape,
     clip_lines,
     compute_layout,
     pretty_macro,
@@ -47,23 +48,49 @@ class PrettyMacroTests(unittest.TestCase):
 
 
 class LayoutTests(unittest.TestCase):
-    def test_twelve_keys_and_three_knobs_do_not_overlap(self):
-        layout = compute_layout(760, 680, 3, 4, 3)
+    def test_knobs_sit_on_the_right_and_do_not_overlap(self):
+        width, height = 760, 680
+        layout = compute_layout(width, height, 3, 4, 3)
         self.assertEqual(len(layout.keys), 12)
         self.assertEqual(len(layout.knobs), 3)
         self.assertGreater(layout.knobs[2].radius, layout.knobs[0].radius)
         self.assertLess(layout.keys[0].box[0], layout.keys[1].box[0])
         self.assertLess(layout.keys[0].box[1], layout.keys[4].box[1])
 
+        key_right = max(key.box[2] for key in layout.keys)
+        key_top = min(key.box[1] for key in layout.keys)
+        key_bottom = max(key.box[3] for key in layout.keys)
+        for knob in layout.knobs:
+            self.assertGreater(knob.center[0] - knob.radius, key_right)
+            for box in knob.pills.values():
+                self.assertGreater(box[0], knob.center[0] + knob.radius)
+        self.assertLess(layout.knobs[0].center[1], layout.knobs[1].center[1])
+        self.assertLess(layout.knobs[1].center[1], layout.knobs[2].center[1])
+        self.assertGreater(layout.knobs[0].center[1], key_top)
+        self.assertLess(layout.knobs[1].center[1], key_bottom)
+        self.assertGreater(layout.knobs[2].center[1], key_bottom)
+
+        kind, geom = chassis_shape(layout)
+        self.assertEqual(kind, "l")
+        _x0, _y0, x1, y1, sx, sy = geom
+        self.assertLess(key_bottom, sy)
+        self.assertLess(sx, layout.plate[0])
+        self.assertGreater(y1, sy)
+        pill_left = min(box[0] for knob in layout.knobs for box in knob.pills.values())
+        self.assertLessEqual(x1, pill_left)
+
         rects = [key.box for key in layout.keys]
         for knob in layout.knobs:
             rects.extend(knob.pills.values())
-            bottom = knob.center[1] + knob.radius
-            top = min(box[1] for box in knob.pills.values())
-            self.assertLess(bottom, top - 4)
+            cx, cy = knob.center
+            rects.append((cx - knob.radius, cy - knob.radius, cx + knob.radius, cy + knob.radius))
         for index, box in enumerate(rects):
             for other in rects[index + 1 :]:
                 self.assertFalse(_overlap(box, other), (box, other))
+        self.assertGreaterEqual(min(box[0] for box in rects), 4)
+        self.assertGreaterEqual(min(box[1] for box in rects), 4)
+        self.assertLessEqual(max(box[2] for box in rects), width - 4)
+        self.assertLessEqual(max(box[3] for box in rects), height - 20)
 
 
 class EditorTests(unittest.TestCase):
